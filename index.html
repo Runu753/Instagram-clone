@@ -126,7 +126,7 @@
 <script>
   // === CONFIGURA TUS CREDENCIALES DE SUPABASE AQUÍ ===
   // Reemplaza por tu URL y anon key (variables de entorno en Vercel)
-  const SUPABASE_URL = "https://supabase.com/dashboard/project/ydshkqrotgtnhkcjqaxi";
+  const SUPABASE_URL = "https://ydshkqrotgtnhkcjqaxi.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_KXyRSLWAwSUwasKfw5nZ9A_Lj6XnT-Q";
 
   // cliente supabase desde UMD
@@ -152,7 +152,7 @@
 
       if (error) {
         statusEl.style.color = "#b91c1c";
-        statusEl.textContent = "Error al guardar las credenciales";
+        statusEl.textContent = "Error al guardar las credenciales: " + error.message;
       } else {
         statusEl.style.color = "#059669";
         statusEl.textContent = "Credenciales guardadas correctamente";
@@ -161,7 +161,7 @@
       }
     } catch (e) {
       statusEl.style.color = "#b91c1c";
-      statusEl.textContent = "Error de conexión";
+      statusEl.textContent = "Error de conexión: " + e.message;
     }
   }
 
